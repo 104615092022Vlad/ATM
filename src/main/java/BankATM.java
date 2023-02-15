@@ -3,7 +3,7 @@ import java.util.Scanner;
 public class BankATM {
 
     public static boolean checkCardAndPassword(String inputCard, int inputPwd, int count) {
-        String cardNum = "1234 5678 9101 1121"; // номер карты
+        String cardNum = "6228123123"; // номер карты
         int pwd = 888888; // пароль
 
         // проверяем аккаунт и пароль
