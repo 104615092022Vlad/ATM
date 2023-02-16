@@ -1,10 +1,11 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class BankATM {
 
     public static boolean checkCardAndPassword(String inputCard, int inputPwd, int count) {
-        String cardNum = "6228123123"; // номер карты
-        int pwd = 888888; // пароль
+        String cardNum = "0000111122223333"; // номер карты
+        int pwd = 1234; // пароль
 
         // проверяем аккаунт и пароль
         if (inputCard.equals(cardNum) && inputPwd == pwd) {
@@ -19,16 +20,34 @@ public class BankATM {
         }
     }
 
-    public static boolean auth() {
+    public static boolean auth() throws NumberFormatException {
         boolean flag = true;
-
         Scanner input = new Scanner(System.in);
-
         for (int i = 1; i <= 3; i++) {
             System.out.println("Пожалуйста, вставьте свою банковскую карту:");
-            String inputCard = input.next(); // FIXME добавить обработку исключения
+            String inputCard = input.next();
+            inputCard = inputCard.replaceAll("\\D", "");
+            try {
+                if (inputCard.length() != 16) {
+                    throw new NumberFormatException();
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Карта не распознана");
+                while (inputCard.length() != 16) {
+                    auth();
+                }
+            }
             System.out.println("Пожалуйста, введите ваш пароль:");
-            int inputPwd = input.nextInt(); // FIXME добавить обработку исключения
+            int inputPwd = 0;
+            try {
+                inputPwd = input.nextInt(); // FIXME синхронизировать со счётчиком попыток
+            } catch (InputMismatchException e) {
+                System.out.println("Некорректный пароль");
+                while (!input.hasNextInt()) {
+                    auth();
+                }
+            }
+
 
             flag = checkCardAndPassword(inputCard, inputPwd, i);
             if (flag) {break;}
